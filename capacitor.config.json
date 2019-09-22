@@ -1,0 +1,7 @@
+{
+  "appId": "com.techjam.helpinghands",
+  "appName": "Helping Hands",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "build"
+}
