@@ -1,0 +1,26 @@
+.container{
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-top: 70px;
+    padding-bottom: 90px;
+}
+
+.heading-medium-black{
+    font-size: 28px !important;
+    color: black;
+    text-align: center;
+}
+
+.qr-code{
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 40px;
+}
+
+.center-horizontal{
+    margin-right: auto;
+    margin-left: auto;
+    align-content: center;
+    text-align: center;
+
+}

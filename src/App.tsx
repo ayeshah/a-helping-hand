@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Redirect, Route } from 'react-router-dom';
 import {
   IonApp,
@@ -15,6 +15,10 @@ import Tab1 from './pages/Tab1';
 import Tab2 from './pages/Tab2';
 import Tab3 from './pages/Tab3';
 import Details from './pages/Details';
+import RecipientOnboarding from './pages/RecipientOnboarding';
+import RecipientRegistration from './pages/RecipientRegistration';
+import RecipientDonation from './pages/RecipientDonation';
+import Purchase from './pages/Purchase';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -34,35 +38,83 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import './custom.css'
 
-const App: React.FC = () => (
-  <IonApp>
-    <IonReactRouter>
-      <IonTabs>
-        <IonRouterOutlet>
-          <Route path="/tab1" component={Tab1} exact={true} />
-          <Route path="/tab2" component={Tab2} exact={true} />
-          <Route path="/tab2/details" component={Details} />
-          <Route path="/tab3" component={Tab3} />
-          <Route exact path="/" render={() => <Redirect to="/tab1" />} />
-        </IonRouterOutlet>
+import React, { Component } from 'react'
+
+type Props = {
+
+}
+
+export default class App extends Component<Props> {
+
+  constructor(props: Props) {
+    super(props)
+    localStorage.setItem("isAuthenticated", "true")
+  }
+
+  render() {
+
+    const isAuthenticated =  localStorage.getItem("isAuthenticated");
+    let pageContent;
+    if(isAuthenticated == 'true'){
+
+      pageContent = 
         <IonTabBar slot="bottom">
-          <IonTabButton tab="tab1" href="/tab1">
-            <IonIcon icon={wallet} />
-            <IonLabel>Purchase</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="tab2" href="/tab2">
-            <IonIcon icon={swap} />
-            <IonLabel>Transactions</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="tab3" href="/tab3">
-            <IonIcon icon={person} />
-            <IonLabel>Profile</IonLabel>
-          </IonTabButton>
-        </IonTabBar>
-      </IonTabs>
+        <IonTabButton tab="tab1" href="/recipient/purchase">
+          <IonIcon icon={wallet} />
+          <IonLabel>Purchase</IonLabel>
+        </IonTabButton>
+        <IonTabButton tab="tab2" href="/tab2">
+          <IonIcon icon={swap} />
+          <IonLabel>Transactions</IonLabel>
+        </IonTabButton>
+        <IonTabButton tab="tab3" href="/tab3">
+          <IonIcon icon={person} />
+          <IonLabel>Profile</IonLabel>
+        </IonTabButton>
+      </IonTabBar>;
+    }
+    else{
+      pageContent = <IonApp >
+            <IonReactRouter>
+        <IonRouterOutlet>
+          <Route path="/recipient/onboarding" component={RecipientOnboarding} exact={true} />
+          <Route path="/recipient/registration" component={RecipientRegistration} exact={true} />
+          
+          {/* <Route path="/tab2/details" component={Details} />
+          <Route path="/tab3" component={Tab3} /> */}
+          <Route exact path="/" render={() => <Redirect to="/recipient/donate" />} />
+    </IonRouterOutlet>
     </IonReactRouter>
-  </IonApp>
-);
+    </IonApp>;
 
-export default App;
+
+      return pageContent;
+          
+    }
+
+    return (
+      <IonApp>
+      <IonReactRouter>
+        <IonTabs>
+          <IonRouterOutlet>
+            <Route path="/recipient/donate" component={RecipientDonation} exact={true} />
+            <Route path="/recipient/purchase" component={Purchase} exact={true} />
+            {/* <Route path="/tab1" component={Tab1} exact={true} />
+            <Route path="/tab2" component={Tab2} exact={true} />
+            <Route path="/tab2/details" component={Details} />
+            <Route path="/tab3" component={Tab3} /> */}
+            <Route exact path="/" render={() => <Redirect to="/recipient/donate" />} />
+          </IonRouterOutlet>
+          {pageContent}
+        </IonTabs>
+      </IonReactRouter>
+    </IonApp>
+    )
+  }
+}
+
+
+
+
