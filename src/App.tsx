@@ -109,7 +109,7 @@ export default class App extends Component<Props> {
               <Route path="/tab2" component={Tab2} exact={true} />
               <Route path="/tab2/details" component={Details} />
               <Route path="/tab3" component={Tab3} /> */}
-              <Route exact path="/" render={() => <Redirect to="/donor/donate" />} />
+              <Route exact path="/" render={() => <Redirect to="/recipient/transactions" />} />
             </IonRouterOutlet>
             {pageContent}
           </IonTabs>

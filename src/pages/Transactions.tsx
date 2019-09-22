@@ -2,13 +2,33 @@ import React, { Component } from 'react'
 import { IonPage, IonIcon, IonContent, IonGrid, IonRow, IonCol, IonHeader, IonToolbar, IonTitle, IonList, IonItem, IonFab, IonFabButton } from '@ionic/react';
 import { Link } from 'react-router-dom'
 import { add } from 'ionicons/icons';
+import axios from 'axios';
 
-export default class Transactions extends Component<any> {
+interface MyState { transactions: any };
+
+type Props ={
+    transactions:[]
+}
+
+export default class Transactions extends Component<Props, MyState> {
 
     constructor(props: any){
         super(props)
         this.renderTransactions = this.renderTransactions.bind(this);
         this.openCamera = this.openCamera.bind(this);
+        this.state={
+            transactions:[]
+        }
+    }
+
+    componentDidMount(){
+
+        axios.get('http://localhost:3001/frontend/recipient/transactions/1') .then(res => {
+            
+            var data = res.data;
+            this.setState({ transactions:res.data });
+          })
+
     }
 
     renderTransactions(transactions: any){
@@ -18,7 +38,7 @@ export default class Transactions extends Component<any> {
             let color = element.type == "Purchase" ? '#D0021B':'#598E1E'
                     return (<IonItem key={idx}>
                             <IonCol>{element.date}</IonCol>
-                            <IonCol style={{color:color}}>{element.type}</IonCol>
+                            <IonCol style={{color:color}}>{element.tx_type ? 'Donate':'Purchase'}</IonCol>
                             <IonCol>{'$'+element.amount}</IonCol>
                         </IonItem>);
         });
@@ -33,7 +53,9 @@ export default class Transactions extends Component<any> {
 
     render() {
 
-        const itemList = this.renderTransactions([{date:'10/9/19', type:'Purchase', amount:'100'},{date:'10/9/19', type:'Donate', amount:'100'}]);
+        let {transactions}= this.state;
+
+        const itemList = this.renderTransactions(transactions);
         return (
             <IonPage>
             <IonHeader>
