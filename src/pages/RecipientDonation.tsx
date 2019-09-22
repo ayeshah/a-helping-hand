@@ -12,7 +12,7 @@ export default class RecipientDonation extends Component {
                     </IonRow>
                   <IonRow >
 
-                  <QRCode className="qr-code" value="hey" />,
+                  <QRCode className="qr-code" value='{"url":"http://localhost:3001/frontend/recipient/profile/", "id":1}' />,
                         
                  
                   </IonRow>

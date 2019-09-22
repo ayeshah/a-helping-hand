@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import QrReader from 'react-qr-reader'
-import { IonPage, IonContent, IonGrid, IonRow, IonHeader, IonToolbar, IonTitle, IonCol , IonButton} from '@ionic/react';
+import { IonImg, IonPage, IonContent, IonGrid, IonRow, IonHeader, IonToolbar, IonTitle, IonCol , IonButton} from '@ionic/react';
+import axios from 'axios';
 
 
 type MyProps = {  };
-interface MyState { scanAvailable: boolean, amount: number, recipient_id: string, recipient_alias: string };
+interface MyState { scanAvailable: boolean, success: boolean, amount: number, recipient_id: string, donor_id: number, recipient_alias: string };
 
 export default class DonorDonation extends Component<any, MyState> {
 
@@ -13,21 +14,50 @@ export default class DonorDonation extends Component<any, MyState> {
     constructor(props: any){
         super(props)
         this.state = {
-            scanAvailable:true,
-            amount:0,
-            recipient_id:'',
-            recipient_alias:''
+            scanAvailable:false,
+            success:false,
+            amount:100,
+            recipient_id:'1',
+            recipient_alias:'Ayesha',
+            donor_id:2
         }
         this.handleScan = this.handleScan.bind(this)
         this.handleError = this.handleError.bind(this)
+        this.donate = this.donate.bind(this)
+    }
+
+    donate(e: any){
+
+        console.log("donating...")
+
+        const { amount, donor_id, recipient_id } = this.state;
+        axios.post("http://localhost:3001/frontend/donor/donate", { amount, donor_id, recipient_id }) .then(res => {
+            
+            console.log("successful");
+            
+            this.setState({ success:true });
+          })
     }
 
     handleScan = (data: any) => {
         if (data) {
+
+          console.log("data", data);
+          var dataJSON = JSON.parse(data);
+          console.log(dataJSON);
+
+          axios.get("http://localhost:3001/frontend/recipient/profile/"+dataJSON.id)
+          .then(res => {
+            
+            this.setState({ recipient_alias:res.data.alias });
+          })
+
+
+          
           this.setState({
             scanAvailable: true,
             recipient_alias: data.recipient_alias,
-            recipient_id: data.recipient_id
+            recipient_id: dataJSON.id
           })
         }
       }
@@ -37,10 +67,34 @@ export default class DonorDonation extends Component<any, MyState> {
 
     render() {
 
-        var { scanAvailable, recipient_alias } = this.state;
+        var { scanAvailable, recipient_alias , amount, success} = this.state;
         let pageContent;
 
-        if(scanAvailable){
+        if(success){
+            pageContent = 
+            (
+                <IonPage>
+                <IonHeader>
+                  <IonToolbar>
+                    <IonTitle>Purchase</IonTitle>
+                  </IonToolbar>
+                </IonHeader>
+                <IonContent  style={{ minHeight:"100%"}}>
+                    <IonGrid style={{marginTop: "115px", marginBottom:"155px", marginLeft:"41px", marginRight:"41px"}}>
+                        <IonRow className="center-horizontal">
+                            <IonImg  src={require("../assets/img/logo.png")}/>
+                        </IonRow>
+
+                        <IonRow style={{color:"#BD10E0", fontSize:"36px", textAlign:'center'}}>{`$ ${amount}`}</IonRow>
+    
+                        <IonRow style={{color:"black", fontSize:"18px"}}>Your donation is complete!</IonRow>
+                        </IonGrid>
+                        
+                    </IonContent>
+                    </IonPage>);
+        }
+
+        else if(scanAvailable){
 
             pageContent = 
             (
@@ -52,29 +106,29 @@ export default class DonorDonation extends Component<any, MyState> {
             </IonHeader>
             <IonContent style={{ minHeight:"100%"}}>
                     <IonRow className="donation-prompt" >How much would you like to donate to 
-                        <span className="alias"> {` ${recipient_alias} `}</span>
-                    today?
+                        <span className="alias"> {` ${recipient_alias} `+' '}</span>
+                    {` today?`}
                     </IonRow>
                     
 
                     <IonRow className="container">
                     <IonRow>
-                        <IonCol size="6"><IonButton>$5</IonButton></IonCol>
-                        <IonCol size="6"><IonButton>$10</IonButton></IonCol>
+                        <IonCol ><IonButton className="donate-button"  fill="outline" onClick={()=> this.setState({amount:5})} >$5</IonButton></IonCol>
+                        <IonCol ><IonButton className="donate-button"  fill="outline" onClick={()=> this.setState({amount:10})}>$10</IonButton></IonCol>
                     </IonRow>
 
                     <IonRow>
-                        <IonCol size="6"><IonButton>$15</IonButton></IonCol>
-                        <IonCol size="6"><IonButton>$20</IonButton></IonCol>
+                        <IonCol ><IonButton className="donate-button"  fill="outline" onClick={()=> this.setState({amount:15})}>$15</IonButton></IonCol>
+                        <IonCol ><IonButton className="donate-button"  fill="outline" onClick={()=> this.setState({amount:20})}>$20</IonButton></IonCol>
                     </IonRow>
 
                     <IonRow>
-                        <IonCol size="12"><IonButton>Other</IonButton></IonCol>
+                        <IonCol ><IonButton className="donate-button"  fill="outline">Other</IonButton></IonCol>
                         
                     </IonRow>
 
                     <IonRow>
-                            <IonButton>Donate</IonButton>
+                            <IonButton className="submit-button"   fill="outline" onClick={this.donate}>Donate</IonButton>
                             
                     </IonRow>
                     </IonRow>
