@@ -19,6 +19,7 @@ import RecipientOnboarding from './pages/RecipientOnboarding';
 import RecipientRegistration from './pages/RecipientRegistration';
 import RecipientDonation from './pages/RecipientDonation';
 import Purchase from './pages/Purchase';
+import Profile from './pages/Profile';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -41,6 +42,7 @@ import './theme/variables.css';
 import './custom.css'
 
 import React, { Component } from 'react'
+import Transactions from './pages/Transactions';
 
 type Props = {
 
@@ -65,11 +67,11 @@ export default class App extends Component<Props> {
           <IonIcon icon={wallet} />
           <IonLabel>Purchase</IonLabel>
         </IonTabButton>
-        <IonTabButton tab="tab2" href="/tab2">
+        <IonTabButton tab="tab2" href="/recipient/transactions">
           <IonIcon icon={swap} />
           <IonLabel>Transactions</IonLabel>
         </IonTabButton>
-        <IonTabButton tab="tab3" href="/tab3">
+        <IonTabButton tab="tab3" href="/recipient/profile">
           <IonIcon icon={person} />
           <IonLabel>Profile</IonLabel>
         </IonTabButton>
@@ -101,11 +103,13 @@ export default class App extends Component<Props> {
           <IonRouterOutlet>
             <Route path="/recipient/donate" component={RecipientDonation} exact={true} />
             <Route path="/recipient/purchase" component={Purchase} exact={true} />
+            <Route path="/recipient/profile" component={Profile} exact={true} />
+            <Route path="/recipient/transactions" component={Transactions} exact={true} />
             {/* <Route path="/tab1" component={Tab1} exact={true} />
             <Route path="/tab2" component={Tab2} exact={true} />
             <Route path="/tab2/details" component={Details} />
             <Route path="/tab3" component={Tab3} /> */}
-            <Route exact path="/" render={() => <Redirect to="/recipient/donate" />} />
+            <Route exact path="/" render={() => <Redirect to="/recipient/profile" />} />
           </IonRouterOutlet>
           {pageContent}
         </IonTabs>

@@ -11,6 +11,11 @@
     text-align: center;
 }
 
+.heading-sm-grey{
+    font-size: 14px !important;
+    color: #707070;
+}
+
 .qr-code{
     margin-left: auto;
     margin-right: auto;
@@ -23,4 +28,15 @@
     align-content: center;
     text-align: center;
 
+}
+
+.action-text{
+    font-size: 12px;
+    color:#1160C2;
+
+}
+
+.balance{
+    font-size: 36px;
+    color:black;
 }

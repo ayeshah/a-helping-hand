@@ -103,13 +103,15 @@
 */
 
 .ion-color-favorite {
-  --ion-color-base: #69bb7b;
-  --ion-color-base-rgb: 105, 187, 123;
+  --ion-color-base: #FF8A17;
+  --ion-color-base-rgb: 255, 138, 23;
   --ion-color-contrast: #ffffff;
   --ion-color-contrast-rgb: 255, 255, 255;
-  --ion-color-shade: #5ca56c;
-  --ion-color-tint: #78c288;
+  --ion-color-shade: rgb(202, 125, 48);
+  --ion-color-tint: rgb(218, 168, 118);
 }
+
+
 
 .ion-color-twitter {
   --ion-color-base: #1da1f4;
