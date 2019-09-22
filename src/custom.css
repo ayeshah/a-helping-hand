@@ -40,3 +40,25 @@
     font-size: 36px;
     color:black;
 }
+
+.text-overlay{
+
+    margin-top:40px;
+    margin-bottom:40px;
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
+    
+}
+
+.donation-prompt{
+    font-size: 35px;
+    color:black;
+    margin-left: 30px;
+    margin-right: 30px;
+    text-align: center;
+}
+
+.alias{
+    color:#BD10E0;
+}
